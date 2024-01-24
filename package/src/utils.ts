@@ -1,36 +1,38 @@
-import fm from "front-matter";
-import * as fs from "fs";
-import * as path from "path";
-import * as marked from "marked";
-// custom hooks for front-matter
-export const useFrontMatter = {
-  preprocess: (markdown:string) => {
-    const { attributes, body, frontmatter, bodyBegin } = fm(markdown);
-    return body;
-  },
+import { unlinkSync, readdirSync } from "fs";
+
+export function cleanupDir(dir: string) {
+  const files = readdirSync(dir);
+  files.forEach((file) => {
+    unlinkSync(file);
+  });
+}
+
+export const theme = {
+  Reset: "\x1b[0m",
+  Bright: "\x1b[1m",
+  Dim: "\x1b[2m",
+  Underscore: "\x1b[4m",
+  Blink: "\x1b[5m",
+  Reverse: "\x1b[7m",
+  Hidden: "\x1b[8m",
+
+  FgBlack: "\x1b[30m",
+  FgRed: "\x1b[31m",
+  FgGreen: "\x1b[32m",
+  FgYellow: "\x1b[33m",
+  FgBlue: "\x1b[34m",
+  FgMagenta: "\x1b[35m",
+  FgCyan: "\x1b[36m",
+  FgWhite: "\x1b[37m",
+  FgGray: "\x1b[90m",
+
+  BgBlack: "\x1b[40m",
+  BgRed: "\x1b[41m",
+  BgGreen: "\x1b[42m",
+  BgYellow: "\x1b[43m",
+  BgBlue: "\x1b[44m",
+  BgMagenta: "\x1b[45m",
+  BgCyan: "\x1b[46m",
+  BgWhite: "\x1b[47m",
+  BgGray: "\x1b[100m",
 };
-
-export function useMdParser(content:string) {
-  const { attributes, body, frontmatter, bodyBegin } = fm(content);
-  return { attributes, body, frontmatter, bodyBegin };
-}
-
-export function useConvertToHtml(body:string) {
-  marked.use({ hooks:useFrontMatter });
-  const html = marked.parse(body);
-  return html;
-}
-
-export function useMdParseFile(filePath:string) {
-  const content = fs.readFileSync(filePath).toString();
-  const { attributes, body, frontmatter, bodyBegin } = fm(content);
-  return { attributes, body, frontmatter, bodyBegin };
-}
-
-export function useMdParseFileToHtml(filePath:string) {
-  const content = fs.readFileSync(filePath).toString();
-  const { attributes, body, frontmatter, bodyBegin } = fm(content);
-  marked.use({ hooks:useFrontMatter });
-  const html = marked.parse(body);
-  return { attributes, body, frontmatter, bodyBegin, html };
-}
