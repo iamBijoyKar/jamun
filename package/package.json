@@ -1,12 +1,12 @@
 {
-  "name": "lemon-docs",
+  "name": "jamun",
   "description": "A simple documentation generator for markdown files.",
   "author": "Bijoy Kar",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "main": "dist/main.js",
-  "bin": "bin/lemon.js",
+  "main": "dist/index.js",
+  "bin": "bin/jamun.js",
   "license": "MIT",
   "scripts": {
     "compile": "tsc --module esnext",
@@ -21,8 +21,7 @@
   "dependencies": {
     "commander": "^11.1.0",
     "front-matter": "^4.0.2",
-    "marked": "^11.1.1",
-    "vite": "^5.0.8"
+    "marked": "^11.1.1"
   },
   "repository": {
     "type": "git",
