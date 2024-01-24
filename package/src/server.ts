@@ -1,28 +1,57 @@
 import { spawn } from "node:child_process";
 import * as path from "node:path";
-import { watch } from "node:fs";
+import { watch, access, writeFileSync } from "node:fs";
 import { performance } from "node:perf_hooks";
 import { generateDevBuild } from "./build.js";
-import { cleanupDir, theme } from "./utils.js";
+import { theme } from "./utils.js";
 
 export async function developmentServer(projectDir: string, env: any) {
   const pathToDist = path.join(projectDir, "dist");
   const pathToSrc = path.join(projectDir, "src");
+  const pathToPages = path.join(pathToSrc, "pages");
 
-  console.log("Development build...");
-  const t0 = performance.now();
+  // pages directory check
+  access(pathToPages, (err) => {
+    if (err) {
+      console.log(theme.FgCyan, "Creating pages directory...", theme.Reset);
+      spawn(`mkdir ${pathToPages}`, [], {
+        env: env,
+        shell: true,
+      });
+      writeFileSync(path.join(pathToPages, "index.md"), "# Hello World");
+    }
+  });
 
+  // dist directory check
+  access(pathToDist, (err) => {
+    if (err) {
+      console.log(theme.FgCyan, "Creating dist directory...", theme.Reset);
+      spawn(`mkdir ${pathToDist}`, [], {
+        env: env,
+        shell: true,
+      });
+    }
+  });
+
+  console.log(theme.FgGreen, "\nDevelopment build...", theme.Reset);
+  const t0 = performance.now(); // start timer for build
+
+  // generate development build
   try {
     await generateDevBuild(pathToSrc, pathToDist);
   } catch (err) {
     console.log(err);
   }
 
-  const t1 = performance.now();
+  const t1 = performance.now(); // end timer for build
   console.log(
-    `Development build completed in ${Math.round(t1 - t0)} milliseconds`
+    theme.FgGray,
+    `\nDevelopment build completed in`,
+    theme.FgWhite,
+    `${Math.round(t1 - t0)} milliseconds`,
+    theme.Reset
   );
-  console.log("Starting development server...");
+  console.log(theme.FgMagenta, "\nStarting development server...", theme.Reset);
 
   try {
     const process = spawn(`cd ${pathToDist} && npx vite`, [], {
