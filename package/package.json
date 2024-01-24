@@ -1,0 +1,31 @@
+{
+  "name": "lemon-docs",
+  "description": "A simple documentation generator for markdown files.",
+  "author": "Bijoy Kar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/main.js",
+  "bin": "bin/lemon.js",
+  "license": "MIT",
+  "scripts": {
+    "compile": "tsc --module esnext",
+    "compile:watch": "tsc -w --module esnext",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "front-matter": "^4.0.2",
+    "marked": "^11.1.1",
+    "vite": "^5.0.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
