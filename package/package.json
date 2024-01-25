@@ -2,7 +2,7 @@
   "name": "jamun",
   "description": "A simple documentation generator for markdown files.",
   "author": "Bijoy Kar",
-  "private": true,
+  "private": false,
   "version": "0.0.1",
   "type": "module",
   "main": "dist/index.js",
