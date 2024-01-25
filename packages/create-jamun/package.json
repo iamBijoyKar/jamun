@@ -1,0 +1,28 @@
+{
+  "name": "create-jamun",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "author": "Bijoy Kar",
+  "bin": {
+    "create-jamun": "bin/create-jamun.js"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "compile:watch": "tsc -w"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamBijoyKar/jamun",
+    "directory": "packages/create-jamun"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.6"
+  }
+}
