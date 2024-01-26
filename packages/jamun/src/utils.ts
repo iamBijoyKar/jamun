@@ -36,3 +36,37 @@ export const theme = {
   BgWhite: "\x1b[47m",
   BgGray: "\x1b[100m",
 };
+
+export const htmlTemplate = (content: string) => `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .container {
+        width: 100%;
+        max-width: 900px;
+        padding: 0 1rem;
+        margin: 0 auto;
+      }
+    </style>
+    <main class="container">
+    ${content}
+    </main>
+  </body>
+</html>
+`;
