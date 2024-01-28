@@ -1,5 +1,4 @@
 import fm from "front-matter";
-import * as fs from "fs";
 import * as marked from "marked";
 import { htmlTemplate } from "./utils.js";
 
@@ -29,22 +28,8 @@ export function useConvertToHtml(body: string) {
   return html;
 }
 
-export function useMdParseFile(filePath: string) {
-  const content = fs.readFileSync(filePath).toString();
-  const { attributes, body, frontmatter, bodyBegin } = fm(content);
-  return { attributes, body, frontmatter, bodyBegin };
-}
-
-export function useMdParseFileToHtml(filePath: string) {
-  const content = fs.readFileSync(filePath).toString();
-  const { attributes, body, frontmatter, bodyBegin } = fm(content);
-  marked.use({ hooks: useFrontMatter });
-  const html = marked.parse(body);
-  return { attributes, body, frontmatter, bodyBegin, html };
-}
-
-export function useMainParser(filePath: string) {
-  const { html } = useMdParseFileToHtml(filePath);
+export function useMainParser(content: string) {
+  const html = useConvertToHtml(content);
   if (isString(html)) {
     const finalHtml = htmlTemplate(html);
     return finalHtml;

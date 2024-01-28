@@ -1,4 +1,4 @@
-import { readdir, writeFile } from "node:fs/promises";
+import { readdir, writeFile, readFile } from "node:fs/promises";
 import * as path from "node:path";
 import { useMainParser } from "./parser.js";
 
@@ -12,7 +12,8 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
     files.forEach(async (dirent) => {
       if (dirent.isDirectory()) return;
       const filePath = path.join(pathToPages, dirent.name);
-      const html = useMainParser(filePath);
+      const fileContent = await readFile(filePath, { encoding: "utf-8" });
+      const html = useMainParser(fileContent);
       const htmlFilePath = path.join(
         pathToDist,
         dirent.name.replace(".md", ".html")
