@@ -13,7 +13,7 @@ export async function developmentServer(projectDir: string, env: any) {
   // pages directory check
   access(pathToPages, (err) => {
     if (err) {
-      console.log(theme.FgCyan, "Creating pages directory...", theme.Reset);
+      console.log(theme.FgCyan, "\nCreating pages directory...", theme.Reset);
       spawn(`mkdir ${pathToPages}`, [], {
         env: env,
         shell: true,
@@ -25,7 +25,7 @@ export async function developmentServer(projectDir: string, env: any) {
   // dist directory check
   access(pathToDist, (err) => {
     if (err) {
-      console.log(theme.FgCyan, "Creating dist directory...", theme.Reset);
+      console.log(theme.FgCyan, "\nCreating dist directory...", theme.Reset);
       spawn(`mkdir ${pathToDist}`, [], {
         env: env,
         shell: true,
