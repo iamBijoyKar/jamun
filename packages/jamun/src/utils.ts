@@ -37,7 +37,7 @@ export const theme = {
   BgGray: "\x1b[100m",
 };
 
-export const htmlTemplate = (content: string) => `
+export const layoutTemplate = `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -65,8 +65,21 @@ export const htmlTemplate = (content: string) => `
       }
     </style>
     <main class="container">
-    ${content}
+    <slot />
     </main>
   </body>
 </html>
 `;
+
+export const injectInLayout = (content: string, layout: string) => {
+  const layoutRegex = /<slot\s*\/>/;
+  const slots = layout.match(layoutRegex);
+  if (slots === null) {
+    throw new Error("Layout does not have a <slot />");
+  }
+  if (slots.length > 1) {
+    throw new Error("Layout has more than one <slot />");
+  }
+  const updatedLayout = layout.replace(slots[0], content);
+  return updatedLayout;
+};

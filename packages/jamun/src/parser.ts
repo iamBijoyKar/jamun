@@ -1,6 +1,5 @@
 import fm from "front-matter";
 import * as marked from "marked";
-import { htmlTemplate } from "./utils.js";
 
 //* type guards
 const isString = (value: any): value is string => {
@@ -34,8 +33,7 @@ export function useMainParser(content: string) {
   // console.log(assetsStrList);
   const html = useConvertToHtml(updatedContent);
   if (isString(html)) {
-    const finalHtml = htmlTemplate(html);
-    return finalHtml;
+    return html;
   }
   throw new Error("html is not a string");
 }
