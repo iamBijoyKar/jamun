@@ -79,10 +79,9 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
   // copy assets
   try {
     try {
-      await access(pathToAssets); // check if assets directory exists
-    } catch (err) {
-      mkdir(pathToDist, "assets");
-      return;
+      await access(path.join(pathToDist, "assets"));
+    } catch {
+      await mkdir(path.join(pathToDist, "assets"), { recursive: true });
     }
     // get all files and directories in assets directory
     const assetsFiles = await readdir(pathToAssets, {
