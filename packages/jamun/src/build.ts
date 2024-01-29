@@ -16,18 +16,28 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
 
   // build pages
   try {
-    const files = await readdir(pathToPages, {
+    const pagesFiles = await readdir(pathToPages, {
       withFileTypes: true,
       recursive: true,
     });
-    files.forEach(async (dirent) => {
-      if (dirent.isDirectory()) return; // TODO: handle nested directories in pages
-      const filePath = path.join(pathToPages, dirent.name);
+    // create directories for pages
+    pagesFiles.forEach(async (dirent) => {
+      if (dirent.isFile()) return;
+      const pagePath = path.join(dirent.path, dirent.name);
+      const relativePath = path.relative(pathToPages, pagePath);
+      const assetDistDirPath = path.join(pathToDist, relativePath);
+      await mkdir(assetDistDirPath, { recursive: true });
+    });
+    // build page files
+    pagesFiles.forEach(async (dirent) => {
+      if (dirent.isDirectory()) return; // TODO: handle nested directories in pages [X] (done)
+      const filePath = path.join(dirent.path, dirent.name);
+      const fileRelativePath = path.relative(pathToPages, filePath);
       const fileContent = await readFile(filePath, { encoding: "utf-8" });
       const html = useMainParser(fileContent);
       const htmlFilePath = path.join(
         pathToDist,
-        dirent.name.replace(".md", ".html")
+        fileRelativePath.replace(".md", ".html")
       );
       await writeFile(htmlFilePath, html);
     });
