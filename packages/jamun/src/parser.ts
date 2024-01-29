@@ -41,14 +41,27 @@ export function useMainParser(content: string) {
 }
 
 export function useAssetsParser(content: string) {
-  var updatedContent = content;
+  let updatedContent = content;
   const imgRegex = /!\[(.*?)\]\((.*?)\)|<\s*img\s+.*\/\s*>/gm;
   const assetsList = content.match(imgRegex);
   assetsList?.forEach((asset) => {
     const assetSrcPath = asset.match(/src="(.*?)"/);
-    const assetSrcStr = assetSrcPath?.[1] || "";
-    const newAssetPath = assetSrcStr.replace("../", "");
-    updatedContent = updatedContent.replace(newAssetPath, newAssetPath || "");
+    if (assetSrcPath !== null) {
+      const assetSrcStr = assetSrcPath?.[1] || "";
+      if (assetSrcStr === "") return;
+      const newAssetPath = assetSrcStr.replace("../", "");
+      updatedContent = updatedContent.replace(assetSrcStr, newAssetPath);
+      // console.log(newAssetPath);
+      return;
+    }
+    const assetSrcPath2 = asset.match(/!\[(.*?)\]\((.*?)\)/);
+    if (assetSrcPath2 !== null) {
+      const assetSrcStr = assetSrcPath2?.[2] || "";
+      if (assetSrcStr === "") return;
+      const newAssetPath = assetSrcStr.replace("../", "");
+      updatedContent = updatedContent.replace(assetSrcStr, newAssetPath || "");
+      return;
+    }
   });
   return updatedContent;
 }
