@@ -30,16 +30,27 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
     });
     // build page files
     pagesFiles.forEach(async (dirent) => {
-      if (dirent.isDirectory()) return; // TODO: handle nested directories in pages [X] (done)
+      if (dirent.isDirectory()) return;
       const filePath = path.join(dirent.path, dirent.name);
       const fileRelativePath = path.relative(pathToPages, filePath);
       const fileContent = await readFile(filePath, { encoding: "utf-8" });
       const html = useMainParser(fileContent);
-      const htmlFilePath = path.join(
-        pathToDist,
-        fileRelativePath.replace(".md", ".html")
-      );
-      await writeFile(htmlFilePath, html);
+      if (dirent.name.endsWith(".md")) {
+        const htmlFilePath = path.join(
+          pathToDist,
+          fileRelativePath.replace(".md", ".html")
+        );
+        await writeFile(htmlFilePath, html);
+      } else if (dirent.name.endsWith(".html")) {
+        const htmlFilePath = path.join(pathToDist, fileRelativePath);
+        await writeFile(htmlFilePath, html);
+      } else {
+        console.log(
+          theme.FgRed,
+          `Error: File type not supported ${dirent.name}`,
+          theme.Reset
+        );
+      }
     });
   } catch (err) {
     console.log(err);
