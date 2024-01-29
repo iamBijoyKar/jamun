@@ -29,10 +29,26 @@ export function useConvertToHtml(body: string) {
 }
 
 export function useMainParser(content: string) {
-  const html = useConvertToHtml(content);
+  const { attributes, body, frontmatter, bodyBegin } = useMdParser(content);
+  const updatedContent = useAssetsParser(body);
+  // console.log(assetsStrList);
+  const html = useConvertToHtml(updatedContent);
   if (isString(html)) {
     const finalHtml = htmlTemplate(html);
     return finalHtml;
   }
   throw new Error("html is not a string");
+}
+
+export function useAssetsParser(content: string) {
+  var updatedContent = content;
+  const imgRegex = /!\[(.*?)\]\((.*?)\)|<\s*img\s+.*\/\s*>/gm;
+  const assetsList = content.match(imgRegex);
+  assetsList?.forEach((asset) => {
+    const assetSrcPath = asset.match(/src="(.*?)"/);
+    const assetSrcStr = assetSrcPath?.[1] || "";
+    const newAssetPath = assetSrcStr.replace("../", "");
+    updatedContent = updatedContent.replace(newAssetPath, newAssetPath || "");
+  });
+  return updatedContent;
 }
