@@ -104,7 +104,11 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
       const assetFilePath = path.join(dirent.path, dirent.name);
       const relativePath = path.relative(pathToSrc, assetFilePath);
       const assetDistFilePath = path.join(pathToDist, relativePath);
-      await copyFile(assetFilePath, assetDistFilePath);
+      try {
+        await copyFile(assetFilePath, assetDistFilePath);
+      } catch (err) {
+        console.log(theme.FgYellow, "A busy file detected", theme.Reset);
+      }
     });
   } catch (err) {
     console.log(err);
