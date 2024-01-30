@@ -16,7 +16,7 @@ export const useFrontMatter = {
   },
 };
 
-export function useMdParser(content: string) {
+export function mdParser(content: string) {
   const { attributes, body, frontmatter, bodyBegin } = fm(content);
   return { attributes, body, frontmatter, bodyBegin };
 }
@@ -27,8 +27,8 @@ export function useConvertToHtml(body: string) {
   return html;
 }
 
-export function useMainParser(content: string) {
-  const { attributes, body, frontmatter, bodyBegin } = useMdParser(content);
+export function useMdParser(content: string) {
+  const { attributes, body, frontmatter, bodyBegin } = mdParser(content);
   const updatedContent = useAssetsParser(body);
   // console.log(assetsStrList);
   const html = useConvertToHtml(updatedContent);
@@ -36,6 +36,11 @@ export function useMainParser(content: string) {
     return html;
   }
   throw new Error("html is not a string");
+}
+
+export function useHtmlParser(content: string) {
+  const updatedContent = useAssetsParser(content);
+  return updatedContent;
 }
 
 export function useAssetsParser(content: string) {

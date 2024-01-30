@@ -7,7 +7,7 @@ import {
   access,
 } from "node:fs/promises";
 import * as path from "node:path";
-import { useMainParser } from "./parser.js";
+import { useMdParser, useHtmlParser } from "./parser.js";
 import { theme, injectInLayout, layoutTemplate } from "./utils.js";
 
 export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
@@ -53,15 +53,17 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
       const filePath = path.join(dirent.path, dirent.name);
       const fileRelativePath = path.relative(pathToPages, filePath);
       const fileContent = await readFile(filePath, { encoding: "utf-8" });
-      const html = useMainParser(fileContent);
-      const finalHtml = injectInLayout(html, layoutContent);
       if (dirent.name.endsWith(".md")) {
+        const html = useMdParser(fileContent);
+        const finalHtml = injectInLayout(html, layoutContent);
         const htmlFilePath = path.join(
           pathToDist,
           fileRelativePath.replace(".md", ".html")
         );
         await writeFile(htmlFilePath, finalHtml);
       } else if (dirent.name.endsWith(".html")) {
+        const html = useHtmlParser(fileContent);
+        const finalHtml = injectInLayout(html, layoutContent);
         const htmlFilePath = path.join(pathToDist, fileRelativePath);
         await writeFile(htmlFilePath, finalHtml);
       } else {
