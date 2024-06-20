@@ -31,7 +31,19 @@ To create a new project with Jamun, you can use the following command:
 npx create-jamun <project-name>
 ```
 
-> **Note**: The npm package is not upto date with the latest changes. So, it is recommended to clone the repository and use it directly.
+> **Note**: The npm package is not upto date with the latest changes. So, it is recommended to clone the repository and use it directly. Follow this [Guidelines](./direct-setup.md)
+
+Change dirs
+
+```bash
+cd <project-name>
+```
+
+Installations
+
+```bash
+npm install
+```
 
 Run the project
 
