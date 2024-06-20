@@ -10,7 +10,7 @@
 ## Features
 
 - **Markdown Support**: Write your content in markdown and Jamun will convert it to HTML.
-- **Directory Structure Routing**: Jamun uses the directory structure to create routes for your website. It also supports markdown or html files as pages.
+- **File Based Routing**: Jamun uses the directory structure and files to create routes for your website. It also supports markdown or html files as pages.
 
 ## Future Features
 
