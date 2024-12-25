@@ -5,6 +5,7 @@ import {
   copyFile,
   mkdir,
   access,
+  rm,
 } from "node:fs/promises";
 import * as path from "node:path";
 import { useMdParser, useHtmlParser } from "./parser.js";
@@ -119,5 +120,24 @@ export async function generateDevBuild(pathToSrc: string, pathToDist: string) {
       "Note: Try to restart the dev server, it may fix the issue.",
       theme.Reset
     );
+  }
+}
+
+export async function devCleanUp(
+  filePath: string,
+  relativePath: string,
+  distPath: string
+) {
+  try {
+    // check if path exists in src directory it should not be deleted
+    await access(filePath);
+    return;
+  } catch {
+    // delete file from dist directory
+    relativePath = path.relative("pages", relativePath);
+    if (relativePath.endsWith(".md")) {
+      relativePath = relativePath.replace(".md", ".html");
+    }
+    await rm(path.join(distPath, relativePath));
   }
 }
