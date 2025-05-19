@@ -12,16 +12,21 @@
     "compile": "tsc --module esnext",
     "compile:watch": "tsc -w --module esnext",
     "build": "tsc && vite build",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
+    "jest": "^29.7.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "commander": "^11.1.0",
     "front-matter": "^4.0.2",
     "marked": "^11.1.1"
+  },
+  "jest": {
+    "transform": {}
   },
   "repository": {
     "type": "git",

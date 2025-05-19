@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 import * as path from "node:path";
 import { watch, access, writeFileSync } from "node:fs";
 import { performance } from "node:perf_hooks";
-import { generateDevBuild } from "./build.js";
+import { generateDevBuild, devCleanUp } from "./build.js";
 import { theme } from "./utils.js";
 
 export async function developmentServer(projectDir: string, env: any) {
@@ -84,13 +84,12 @@ export async function developmentServer(projectDir: string, env: any) {
       },
       (eventType, filename) => {
         if (filename) {
-          const filePath = path.join(projectDir, filename);
           console.log(
             theme.FgYellow,
             "Changes detected in",
             theme.Reset,
             theme.FgGray,
-            filePath,
+            filename,
             theme.Reset
           );
           try {
@@ -98,6 +97,9 @@ export async function developmentServer(projectDir: string, env: any) {
           } catch (err) {
             console.log(err);
           }
+          // clean up dist directory
+          const filePath = path.join(pathToSrc, filename);
+          devCleanUp(filePath, filename, pathToDist);
         }
       }
     );
